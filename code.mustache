@@ -1,8 +1,8 @@
 /**
- *
   {{#urlParamsComments}}
  * {{.}}
   {{/urlParamsComments}}
+ *
   {{#bodyComments}}
  * {{.}}
   {{/bodyComments}}
@@ -11,9 +11,10 @@ export functionName (params{{#hasBody}}, data{{/hasBody}}) {
   return request({
     method: "{{method}}",
     url: "{{{url}}}",
-    params{{#hasBody}},
-    data
+    {{#hasBody}}
+    data,
     {{/hasBody}}
+    params
   })
 }
 
