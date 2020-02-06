@@ -1,35 +1,19 @@
-const AxiosGenerator = function() {
+const Mustache = require('./mustache');
+const codeGenerator = function() {
   this.generate = function(context, requests, options) {
     const request = requests[0];
+    
     const config = {
       method: request.method,
       url: request.urlBase
-      // ...extract(request, 'urlParameters', 'params'),
-      // ...extract(request, 'headers'),
-      // ...extract(request, 'httpBasicAuth', 'auth'),
-      // ...extract(request, 'timeout'),
-      // ...body(request),
     };
     const urlParams = extract(request, 'urlParameters', 'params').params || {};
     const reqBody = body(request).data || {};
-    const hasBody = ['PUT', 'POST', 'PATCH'].indexOf(request.method) >= 0;
-
-    const comment = `/**
-${generateComments(urlParams, 'params')}
-${generateComments(reqBody, 'data')}
- */
-`;
-    return (
-      comment +
-      `export functionName (params${hasBody ? ' ,data' : ''}) {\r\n` +
-      `  return request({\r\n` +
-      `    method: "${config.method}",\r\n` +
-      `    url: "${config.url}",\r\n` +
-      `    params: params${hasBody? ',': ''}\r\n` +
-      `${hasBody ? '    data: data\r\n' : ''}` +
-      `  })\r\n` +
-      `}`
-    );
+    config.hasBody = ['PUT', 'POST', 'PATCH'].indexOf(request.method) >= 0;
+    config.urlParamsComments = generateComments(urlParams, 'params')
+    config.bodyComments = generateComments(reqBody, 'data')
+    const template = readFile("code.mustache");
+    return Mustache.render(template, config)
   };
 };
 
@@ -54,19 +38,22 @@ const body = request => {
 };
 
 const generateComments = (obj, type) => {
-  console.log(obj, type);
+
+  if (typeof obj === 'string') {
+    obj = JSON.parse(obj)
+  }
   let ret = [];
   if (Object.keys(obj).length > 0) {
     Object.keys(obj).forEach(key => {
       const value = obj[key];
-      ret.push(` * @${type}.${key} ${typeof value}`);
+      ret.push(`@${type}.${key} ${typeof value}`);
     });
-    return ret.join('\r\n');
+    return ret;
   } else {
-    return ` * @${type}`
+    return [];
   }
 };
 
-AxiosGenerator.identifier = 'dev.yzg.codeGenerator';
-AxiosGenerator.title = 'freshes Code Generator';
-registerCodeGenerator(AxiosGenerator);
+codeGenerator.identifier = 'dev.yzg.codeGenerator';
+codeGenerator.title = 'freshes Code Generator';
+registerCodeGenerator(codeGenerator);
