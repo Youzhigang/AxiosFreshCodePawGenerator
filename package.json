@@ -1,0 +1,14 @@
+{
+  "name": "dev.yzg.codegenerator",
+  "version": "1.0.0",
+  "description": "A [Paw Extension](https://paw.cloud/) for generating [axios](https://github.com/axios/axios) requests.",
+  "main": "codeGenerator.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mustache": "^4.0.0"
+  }
+}
