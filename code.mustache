@@ -7,7 +7,7 @@
  * {{.}}
   {{/bodyComments}}
  */
-export functionName (params{{#hasBody}}, data{{/hasBody}}) {
+export function fName (params{{#hasBody}}, data{{/hasBody}}) {
   return request({
     method: "{{method}}",
     url: "{{{url}}}",
@@ -17,5 +17,3 @@ export functionName (params{{#hasBody}}, data{{/hasBody}}) {
     params
   })
 }
-
-

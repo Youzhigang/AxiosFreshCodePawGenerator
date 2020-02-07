@@ -21,7 +21,7 @@ ${generateComments(reqBody, 'data')}
 `;
     return (
       comment +
-      `export functionName (params${hasBody ? ' ,data' : ''}) {\r\n` +
+      `export function fName (params${hasBody ? ' ,data' : ''}) {\r\n` +
       `  return request({\r\n` +
       `    method: "${config.method}",\r\n` +
       `    url: "${config.url}",\r\n` +
