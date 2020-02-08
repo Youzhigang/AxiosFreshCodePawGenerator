@@ -1,5 +1,6 @@
 const Mustache = require('./mustache');
 const codeGenerator = function() {
+  // eslint-disable-next-line no-unused-vars
   this.generate = function(context, requests, options) {
     const request = requests[0];
     
@@ -12,6 +13,7 @@ const codeGenerator = function() {
     config.hasBody = ['PUT', 'POST', 'PATCH'].indexOf(request.method) >= 0;
     config.urlParamsComments = generateComments(urlParams, 'params')
     config.bodyComments = generateComments(reqBody, 'data')
+    // eslint-disable-next-line no-undef
     const template = readFile("code.mustache");
     return Mustache.render(template, config)
   };
@@ -56,4 +58,5 @@ const generateComments = (obj, type) => {
 
 codeGenerator.identifier = 'dev.yzg.codeGenerator';
 codeGenerator.title = 'freshes Code Generator';
+// eslint-disable-next-line no-undef
 registerCodeGenerator(codeGenerator);
